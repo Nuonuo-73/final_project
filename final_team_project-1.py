@@ -106,7 +106,7 @@ streamlit_echarts.st_pyecharts(
 
 # analyze the impact of each kind of scores on entrepreneurship by using stack graph
 top_cities = df.head(20)
-top_cities_info = top_cities[['city', r'quantity score\n', r'quality score\r\n', r'business score\r\n']].set_index('city')
+top_cities_info = top_cities[['city', 'quantity score\\n', 'quality score\\r\\n', r'business score\\r\\n']].set_index('city')
 ##fig, ax3 = plt.subplots(figsize= (15,5))
 fig_3 = top_cities_info.iplot(asFigure=True, kind='bar',barmode='stack',title='Inpact of different scores')
 st.plotly_chart(fig_3)
