@@ -19,10 +19,12 @@ st.title('Best Cities & Countries for Startups')
 
 # read csv and show the dataframe
 df = pd.read_csv('best cities for startups in 2022 - in 2022.csv')
+
 df_2 = df['city'].str.split(',', expand = True)
 df_3 = df.drop('city', axis = 1).join(df_2)
-df_3.rename(columns={0:'city', 1:'country'}, inplace=True)
 df_3.rename(columns={"quantity score\n":'quantity score', 'quality score\r\n':'quality score','business score\r\n':'business score','sign of change in position\r\n':'sign of change in position'},inplace=True)
+df_3.rename(columns={0:'city', 1:'country'}, inplace=True)
+
 df_3.index = np.arange(1, len(df)+1)
 st.dataframe(df_3)
 
@@ -104,7 +106,7 @@ streamlit_echarts.st_pyecharts(
 
 # analyze the impact of each kind of scores on entrepreneurship by using stack graph
 top_cities = df.head(20)
-top_cities_info = top_cities[['city', 'quantity score\n', 'quality score\r\n', 'business score\r\n']].set_index('city')
+top_cities_info = top_cities[['city', r'quantity score\n', r'quality score\r\n', r'business score\r\n']].set_index('city')
 ##fig, ax3 = plt.subplots(figsize= (15,5))
 fig_3 = top_cities_info.iplot(asFigure=True, kind='bar',barmode='stack',title='Inpact of different scores')
 st.plotly_chart(fig_3)
