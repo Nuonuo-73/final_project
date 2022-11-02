@@ -1,0 +1,10 @@
+urllib
+pyecharts
+pandas
+matplotlib
+numpy
+streamlit
+streamlit_echarts
+requests
+json
+cufflinks
