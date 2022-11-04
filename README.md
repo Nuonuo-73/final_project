@@ -9,13 +9,13 @@ This is the website for the final project of team 17
 ## Dataset that we use
 
 [Best cities and countries for startups](https://www.kaggle.com/datasets/ramjasmaurya/best-cities-and-countries-for-startups-in-2021)
-The dataset has about 1000 unique values and 9 columns. It shows best startups from different cities and countries. Each startup is matched with four scores showing its capacity in different aspects. Doing research on this dataset will provide us with knowledge about how to manage a success startup.
+<br>The dataset has about 1000 unique values and 9 columns. It shows best startups from different cities and countries. Each startup is matched with four scores showing its capacity in different aspects. Doing research on this dataset will provide us with knowledge about how to manage a success startup.
 
 ## Presentation
 
 [presentation slides](team-17.pptx)
-Our slides show what we mainly explore in our final project and our conclusions.
+<br>ur slides show what we mainly explore in our final project and our conclusions.
 ## Data APP
  
  [Streamlit Demo](https://nuonuo-73-final-project-team-17-final-project-qcicun.streamlit.app/)
- This is our data app, which visualises the problems we are working on and hopefully it will help you understand what we are doing.
+ <br>This is our data app, which visualises the problems we are working on and hopefully it will help you understand what we are doing.
