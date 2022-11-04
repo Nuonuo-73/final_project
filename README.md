@@ -14,7 +14,7 @@ This is the website for the final project of team 17
 ## Presentation
 
 [presentation slides](team-17.pptx)
-<br>ur slides show what we mainly explore in our final project and our conclusions.
+<br>Our slides show what we mainly explore in our final project and our conclusions.
 ## Data APP
  
  [Streamlit Demo](https://nuonuo-73-final-project-team-17-final-project-qcicun.streamlit.app/)
