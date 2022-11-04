@@ -21,12 +21,15 @@ st.image(image, use_column_width=True)
 
 st.title('Best Cities & Countries for Startups')
 st.text('The dataset has about 1000 unique values and 9 columns. It shows best startups from\ndifferent cities and countries. Each startup is matched with four scores showing its\ncapacity in different aspects. Doing research on this dataset will provide us with\nknowledge about how to manage a success startup.')
-st.header('Revised DataFrame') ###
+st.header('Revised DataFrame') 
 st.text('We split the \'city \' column into two columns \'city\'  \'country\' to make further \nresearch easier.')
 
 plt.style.use('seaborn')
 
 df = pd.read_csv('best cities for startups in 2022 - in 2022.csv', encoding='gbk')
+for i in range(len(df)):
+    if (df['sign of change in position'][i] != '+') & (df['sign of change in position'][i] != '-'):
+        df['sign of change in position'].fillna('0', inplace = True)
 df_2 = df['city'].str.split(',', expand = True)
 df_3 = df.drop('city', axis = 1).join(df_2)
 df_3.rename(columns={0:'city', 1:'country'}, inplace=True)
@@ -37,9 +40,9 @@ df_country = df_3.groupby(['country']).mean()
 df_country.sort_values(['total score'], axis=0, ascending=False, inplace=True)
 df_country = df_country.reset_index()
 
-#图1柱状图
+#chart 1
 st.header('Analysis 1: Best countries for startups')
-st.subheader('Histogram of top 10 countries for startups') ###
+st.subheader('Histogram of top 10 countries for startups') 
 st.text('The histogram shows top 10 cities with highest total score.')
 df_4 = df_country.head(10)
 df_5 = df_4[['country','total score']].set_index('country')
@@ -57,7 +60,7 @@ for country in df_country.country:
 df_city_count = df_3.country
 result_city_count = df_city_count.value_counts()
 
-#图2柱状图
+#chart 2
 st.subheader('Number of best cities in a country')
 fig_2 = result_city_count[::-1][-10:].iplot(asFigure=True, kind='barh',title='Top 10 Countries for Startups\n(Best City Total)')
 st.plotly_chart(fig_2)
@@ -69,12 +72,12 @@ df_country = df_country.drop('position', axis = 1)
 df_country['best cities'] = city_count_list
 st.dataframe(df_country[:10])
 
-#为饼图添加标题
+#add captions to pie charts
 st.subheader('Proportion of the Best Cities in the Top 10 Countries')
 st.text('It is an interactive pie. By clicking taggings on the right, you can add or erase\ncountries from pie chart.')
-#制作饼图
+#make pie charts
 score_top_countries = df_country[:10].country.tolist()#[' United Arab Emirates', ' Singapore', ' China', ' United States', ' South Korea', ' Israel', ' Estonia', ' Indonesia', ' Japan', ' India']#
-value = df_country[:10]['best cities'].tolist()#[3, 1, 44, 257, 5, 13, 2, 5, 11, 37]#
+value = df_country[:10]['best cities'].tolist()#[3, 1, 44, 257, 5, 13, 2, 5, 11, 37]
 
 streamlit_echarts.st_pyecharts(
         Pie()
@@ -108,11 +111,11 @@ streamlit_echarts.st_pyecharts(
 st.text('By looking at the pie chart, we can draw the conclusion that America is indeed the\nbest country for startups.')
 
 # analyze the impact of each kind of scores on entrepreneurship by using stack graph
-st.header('Analysis 2: Impact of each kind of scores on startups') ###
+st.header('Analysis 2: Impact of each kind of scores on startups') 
 st.subheader('Stacked chart of different scores')
 st.text('In order to find clues about what element can affect a startup most, we use stack\nchart to analyze.')
 
-#制作堆叠图
+#make stack bar
 top_cities = df.head(20)
 top_cities_info = top_cities[['city', 'quantity score', 'quality score', 'business score']].set_index('city')
 
@@ -120,8 +123,8 @@ fig_3 = top_cities_info.iplot(asFigure=True, kind='bar',barmode='stack')
 st.plotly_chart(fig_3)
 st.text('It is obvious that quality score accounts for the most part of total scores. We can\nassume that quality scores are determinant of total scores. To test the hypothesis,\nwe can use the line chart.')
 
-#制作折线图
-st.subheader('Relationship between total score and other scores') ###
+#make line chart
+st.subheader('Relationship between total score and other scores') 
 fig_4 = make_subplots(rows=2, cols=2,subplot_titles=['Total & Other Scores','Total & Quality Scores','Total & Quantity Scores','Total & Business Scores'])
 x_list = [i + 1 for i in range(20)]
 
@@ -159,7 +162,7 @@ st.plotly_chart(fig_4)
 st.text('We can see that the line of quality and the line of total score is quite close to\neach other and their trends are most the same. However, when it comes to quantity\nline and bussiness line, they are almost flat and have little relation with total\nscores.')
 st.text('So quality score, that is, environmental score, plays the most important role in\naffecting the total score.')
 
-##获取城市的地理信息
+##get geographical information about the city
 #for i in df_3[df_3['country'] == ' China']['city'].index:
 #    if df_3[df_3['country'] == ' China']['city'][i].find("'") != -1:
 #        df_3.loc[i, 'city']= df_3.loc[i, 'city'].replace("'",'')
@@ -168,8 +171,8 @@ st.text('So quality score, that is, environmental score, plays the most importan
  
 #def gaode(addr_city):
 #    para = {
-#        "address": quote(addr_city), #传入地址参数
-#        "key": "6c4d227098e7cda4345c79be1778faa6" #高德地图开放平台申请ak
+#        "address": quote(addr_city), 
+#        "key": "6c4d227098e7cda4345c79be1778faa6"
 #    }
 #    url = "https://restapi.amap.com/v3/geocode/geo?"
 #    req = requests.get(url,para)
@@ -183,16 +186,16 @@ st.text('So quality score, that is, environmental score, plays the most importan
 #    lon_list.append(gaode(city)['geocodes'][0]['location'].split(',')[0])
 #    lat_list.append(gaode(city)['geocodes'][0]['location'].split(',')[1])
 
-##更新出一个新的表格
+##update a new dataframe
 #df_china=df_3[df_3['country'] == ' China']
-#df_china.index = np.arange(1, len(df_china)+1)
+#df_china.index = np.arange(1, len(df_china) + 1)
 #df_china['lat'] = lat_list
 #df_china['lon'] = lon_list
-#df_china = df_china.drop('country', axis=1)
+#df_china = df_china.drop('country', axis = 1)
 #df_china['lon'] = df_china['lon'].astype(float)
 #df_china['lat'] = df_china['lat'].astype(float)
-#侧边栏筛选项
-#创建新列
+
+##create a new column for sidebar filter items
 #position_change = []
 
 #for i in df_china.index:
@@ -214,30 +217,31 @@ st.text('So quality score, that is, environmental score, plays the most importan
 #    else:
 #        position_change.append('new best city')
 
-#删除原有列并加入新列
+##delete existing columns and add new ones
 #df_china = df_china.drop('sign of change in position', axis=1).drop('change in position from 2021', axis=1)
 #df_china['position change'] = position_change
 
-#保存为新文件(让后续筛选更迅速)
+##save as new file (makes filtering quicker)
 #df_china.to_csv('df_map_china.csv', index=False)
-#读取新文件
+##read new file
 df_map = pd.read_csv('df_map_china.csv')
-st.subheader('   Distribution of the best cities in China')
+st.subheader('Distribution of the best cities in China')
 st.dataframe(df_map)
 
-##设立侧边栏筛选项
-###输入值作为筛选
+#create sidebar filters
+#enter a value as a filter
 form = st.sidebar.form('total_score_form')
 total_score_filter = form.text_input('The total score is above?(please enter a integer number)', '0')
 form.form_submit_button('Apply')
 
-###变动作为筛选
+#choose a change as a filter
 position_change_filter = st.sidebar.multiselect(
     'World ranking compared with 2021',
         df_map['position change'].unique(),
-        df_map['position change'].unique())
+        df_map['position change'].unique()
+)
 
-###选择作为筛选
+#radio 
 business_score_filter = st.sidebar.radio(
     "Choose business score level",
     ('>2','>1','all')
@@ -251,10 +255,10 @@ quantity_score_filter = st.sidebar.radio(
     ('>5','>1','all')
 )
 
-###filter by these filter
+#filter by these filter
 if total_score_filter!= '0':
-    df_map = df_map[df_map['total score'].astype(float) >= int(total_score_filter)]
-#这次应该正确
+    df_map = df_map[df_map['total score'] >= int(total_score_filter)]
+    
 df_map = df_map[df_map['position change'].isin(position_change_filter)]
 
 if business_score_filter == '>2':
@@ -271,7 +275,6 @@ if quality_score_filter == '>10':
 if quality_score_filter == 'all':
     df_map = df_map[df_map['quality score'].astype(float) > 0]
 
-
 if quantity_score_filter == '>5':
     df_map = df_map[df_map['quantity score'].astype(float) > 5]
 if quantity_score_filter == '>1':
@@ -279,10 +282,7 @@ if quantity_score_filter == '>1':
 if quantity_score_filter == 'all':
     df_map = df_map[df_map['quantity score'].astype(float) > 0]
 
-
-
-
-##绘制地图
+#draw a map
 st.text('It is an interactive map.')
 st.text('we use the geocoding of Gaode Mapsthe to determine the latitude and longitude of\ncities in China for our map.')
 st.text('The map can show best cities for starups in China.')
