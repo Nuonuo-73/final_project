@@ -27,6 +27,9 @@ st.text('We split the \'city \' column into two columns \'city\'  \'country\' to
 plt.style.use('seaborn')
 
 df = pd.read_csv('best cities for startups in 2022 - in 2022.csv', encoding='gbk')
+for i in range(len(df)):
+    if (df['sign of change in position'][i] != '+') & (df['sign of change in position'][i] != '-'):
+        df['sign of change in position'].fillna(0, inplace = True)
 df_2 = df['city'].str.split(',', expand = True)
 df_3 = df.drop('city', axis = 1).join(df_2)
 df_3.rename(columns={0:'city', 1:'country'}, inplace=True)
