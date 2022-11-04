@@ -104,66 +104,72 @@ st.pyplot(fig, ax4[0])
 st.pyplot(fig, ax4[1])
 st.pyplot(fig, ax4[2])
 
-#城市在中国的分布地的数据获取
-st.subheader('   Distribution of the best cities in China')
+
 ##获取城市的地理信息
-for i in df_3[df_3['country'] == ' China']['city'].index:
-    if df_3[df_3['country'] == ' China']['city'][i].find("'") != -1:
-        df_3.loc[i, 'city']= df_3.loc[i, 'city'].replace("'",'')
+#for i in df_3[df_3['country'] == ' China']['city'].index:
+#    if df_3[df_3['country'] == ' China']['city'][i].find("'") != -1:
+#        df_3.loc[i, 'city']= df_3.loc[i, 'city'].replace("'",'')
 
-addr_city = df_3[df_3['country'] == ' China']['city'].tolist()
+#addr_city = df_3[df_3['country'] == ' China']['city'].tolist()
  
-def gaode(addr_city):
-    para = {
-        "address": quote(addr_city), #传入地址参数
-        "key": "6c4d227098e7cda4345c79be1778faa6" #高德地图开放平台申请ak
-    }
-    url = "https://restapi.amap.com/v3/geocode/geo?"
-    req = requests.get(url,para)
-    req = req.json()
-    m = req
-    return m
+#def gaode(addr_city):
+#    para = {
+#        "address": quote(addr_city), #传入地址参数
+#        "key": "6c4d227098e7cda4345c79be1778faa6" #高德地图开放平台申请ak
+#    }
+#    url = "https://restapi.amap.com/v3/geocode/geo?"
+#    req = requests.get(url,para)
+#    req = req.json()
+#    m = req
+#    return m
 
-lat_list = []
-lon_list = []
-for city in addr_city:
-    lon_list.append(gaode(city)['geocodes'][0]['location'].split(',')[0])
-    lat_list.append(gaode(city)['geocodes'][0]['location'].split(',')[1])
+#lat_list = []
+#lon_list = []
+#for city in addr_city:
+#    lon_list.append(gaode(city)['geocodes'][0]['location'].split(',')[0])
+#    lat_list.append(gaode(city)['geocodes'][0]['location'].split(',')[1])
 
 ##更新出一个新的表格
-df_china=df_3[df_3['country'] == ' China']
-df_china.index = np.arange(1, len(df_china)+1)
-df_china['lat'] = lat_list
-df_china['lon'] = lon_list
-df_china = df_china.drop('country', axis=1)
-
+#df_china=df_3[df_3['country'] == ' China']
+#df_china.index = np.arange(1, len(df_china)+1)
+#df_china['lat'] = lat_list
+#df_china['lon'] = lon_list
+#df_china = df_china.drop('country', axis=1)
+#df_china['lon'] = df_china['lon'].astype(float)
+#df_china['lat'] = df_china['lat'].astype(float)
 #侧边栏筛选项
 #创建新列
-position_change = []
+#position_change = []
 
-for i in df_china.index:
-    if df_china['change in position from 2021'][i] != 'new':
-        if (df_china['sign of change in position'][i] == '+') & (int(df_china['change in position from 2021'][i]) > 100) :
-            position_change.append('substantial increase')
-        elif (df_china['sign of change in position'][i] == '+') & (int(df_china['change in position from 2021'][i]) > 10) :
-            position_change.append('obvious increase')
-        elif (df_china['sign of change in position'][i] == '+') & (int(df_china['change in position from 2021'][i]) <= 10):
-            position_change.append('small increase')
-        elif (df_china['sign of change in position'][i] == '-') & (int(df_china['change in position from 2021'][i]) > 100) :
-            position_change.append('substantial decrease')
-        elif (df_china['sign of change in position'][i] == '-') & (int(df_china['change in position from 2021'][i]) > 10) :
-            position_change.append('obvious decrease')
-        elif (df_china['sign of change in position'][i] == '-') & (int(df_china['change in position from 2021'][i]) <= 10):
-            position_change.append('small decrease')
-        else :
-            position_change.append('remain unchanged')
-    else:
-        position_change.append('new best city')
+#for i in df_china.index:
+#    if df_china['change in position from 2021'][i] != 'new':
+#        if (df_china['sign of change in position'][i] == '+') & (int(df_china['change in position from 2021'][i]) > 100) :
+#            position_change.append('substantial increase')
+#        elif (df_china['sign of change in position'][i] == '+') & (int(df_china['change in position from 2021'][i]) > 10) :
+#            position_change.append('obvious increase')
+#        elif (df_china['sign of change in position'][i] == '+') & (int(df_china['change in position from 2021'][i]) <= 10):
+#            position_change.append('small increase')
+#        elif (df_china['sign of change in position'][i] == '-') & (int(df_china['change in position from 2021'][i]) > 100) :
+#            position_change.append('substantial decrease')
+#        elif (df_china['sign of change in position'][i] == '-') & (int(df_china['change in position from 2021'][i]) > 10) :
+#            position_change.append('obvious decrease')
+#        elif (df_china['sign of change in position'][i] == '-') & (int(df_china['change in position from 2021'][i]) <= 10):
+#            position_change.append('small decrease')
+#        else :
+#            position_change.append('remain unchanged')
+#    else:
+#        position_change.append('new best city')
 
 #删除原有列并加入新列
-df_china = df_china.drop('sign of change in position', axis=1).drop('change in position from 2021', axis=1)
-df_china['position change'] = position_change
-st.dataframe(df_china)
+#df_china = df_china.drop('sign of change in position', axis=1).drop('change in position from 2021', axis=1)
+#df_china['position change'] = position_change
+
+#保存为新文件(让后续筛选更迅速)
+#df_china.to_csv('df_map_china.csv', index=False)
+#读取新文件
+df_map = pd.read_csv('df_map_china.csv')
+st.subheader('   Distribution of the best cities in China')
+st.dataframe(df_map)
 
 ##设立侧边栏筛选项
 ###输入值作为筛选
@@ -174,8 +180,8 @@ form.form_submit_button('Apply')
 ###变动作为筛选
 position_change_filter = st.sidebar.multiselect(
     'World ranking compared with 2021',
-        df_china['position change'].unique(),
-        df_china['position change'].unique())
+        df_map['position change'].unique(),
+        df_map['position change'].unique())
 
 ###选择作为筛选
 business_score_filter = st.sidebar.radio(
@@ -193,34 +199,33 @@ quantity_score_filter = st.sidebar.radio(
 
 ###filter by these filter
 if total_score_filter!= '0':
-    df_china = df_china[df_china['total score'].astype(float) >= int(total_score_filter)]
+    df_map = df_map[df_map['total score'].astype(float) >= int(total_score_filter)]
 #这次应该正确
-df_china = df_china[df_china['position change'].isin(position_change_filter)]
+df_map = df_map[df_map['position change'].isin(position_change_filter)]
 
 
 if business_score_filter == 'all':
-    df_china = df_china[df_china['business score'].astype(float) > 0]
+    df_map = df_map[df_map['business score'].astype(float) > 0]
 elif business_score_filter == 'higher than 1':
-    df_china = df_china[df_china['business score'].astype(float) > 1]
+    df_map = df_map[df_map['business score'].astype(float) > 1]
 elif business_score_filter == 'higher than 2':
-    df_china = df_china[df_china['business score'].astype(float) > 2]
+    df_map = df_map[df_map['business score'].astype(float) > 2]
 
 if quality_score_filter == 'all':
-    df_china = df_china[df_china['quality score'].astype(float) > 0]
+    df_map = df_map[df_map['quality score'].astype(float) > 0]
 elif business_score_filter == 'higher than 10':
-    df_china = df_china[df_china['quality score'].astype(float) > 10]
+    df_map = df_map[df_map['quality score'].astype(float) > 10]
 elif business_score_filter == 'higher than 50':
-    df_china = df_china[df_china['quality score'].astype(float) > 50]
+    df_map = df_map[df_map['quality score'].astype(float) > 50]
 
 if quantity_score_filter == 'all':
-    df_china = df_china[df_china['quantity score'].astype(float) > 0]
+    df_map = df_map[df_map['quantity score'].astype(float) > 0]
 elif business_score_filter == 'higher than 1':
-    df_china = df_china[df_china['quantity score'].astype(float) > 1]
+    df_map = df_map[df_map['quantity score'].astype(float) > 1]
 elif business_score_filter == 'higher than 5':
-    df_china = df_china[df_china['quantity score'].astype(float) > 5]
+    df_map = df_map[df_map['quantity score'].astype(float) > 5]
 
 ##绘制地图
-df_china['lon'] = df_china['lon'].astype(float)
-df_china['lat'] = df_china['lat'].astype(float)
 
-st.map(df_china)
+
+st.map(df_map)
